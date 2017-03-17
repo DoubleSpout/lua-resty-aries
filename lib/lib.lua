@@ -406,30 +406,37 @@ tplLib.compile = function(self, code)
 
 	-- 开启一个协程来渲染模版
 	local func = self:exec(code, self.mainTplName, ctx)
-	local coroutineFunc = function()
-		local co = coroutine.create(func)
-		local start = os.time()
-		local ok,errMsg = coroutine.resume(co)
-		if not ok then
-			error(errMsg, 2)
-		end
-		while true do	-- 判断超时渲染
-			if (ariesIns.timeout > 0) and (os.time() - start > ariesIns.timeout) then
-				error(" render tmplate is timeout ", 2)
-				break
-			elseif coroutine.status(co) == "dead" then
-				break
-			else
-				local ok,errMsg = coroutine.resume(co)
-				if not ok then
-					error(errMsg, 2)
+	if ariesIns.timeout > 0 then
+		local coroutineFunc = function()
+			local co = coroutine.create(func)
+			local start = os.time()
+			local ok,errMsg = coroutine.resume(co)
+			if not ok then
+				error(errMsg, 2)
+			end
+			while true do	-- 判断超时渲染
+				if (ariesIns.timeout > 0) and (os.time() - start > ariesIns.timeout) then
+					error(" render tmplate is timeout ", 2)
+					break
+				elseif coroutine.status(co) == "dead" then
+					break
+				else
+					local ok,errMsg = coroutine.resume(co)
+					if not ok then
+						error(errMsg, 2)
+					end
 				end
 			end
 		end
-	end
-	local ok, err = pcall(coroutineFunc)
-	if not ok then
-		error(self.mainTplName .. " have error " .. err, 2)
+		local ok, err = pcall(coroutineFunc)
+		if not ok then
+			error(string.format("%s have error %s", self.mainTplName, err), 2)
+		end
+	else
+		local ok, err = pcall(func)
+		if not ok then
+			error(string.format("%s have error %s", self.mainTplName, err), 2)
+		end
 	end
 
 	return table.concat(result, "")

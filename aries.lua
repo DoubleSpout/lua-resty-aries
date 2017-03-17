@@ -10,7 +10,7 @@ local Aries = {
     rootPath = "./tpl",
     sep = "/",
     isShowDetailError = true,   -- must set off in production
-    timeout = 10,       --sec
+    timeout = -1,       --sec
     ctx = {},
     getInclude = function(self, includeName)
                     return self.readfile(string.format("%s%s%s.%s", self.rootPath, self.sep, includeName, self.fileSuffix))

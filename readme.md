@@ -145,7 +145,8 @@ we can get error msg, correct to postion the error line, even it at include temp
 		isShowDetailError = true,  
 
 		-- template render timeout, unit seconde
-		timeout = 10,
+		-- default not timeout
+		timeout = -1,
 
 		-- instance level object to put to template
 		ctx = {},

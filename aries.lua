@@ -1,7 +1,5 @@
-
 local tools = require("lib.tools")
 local lib = require("lib.lib")
-local json = require("json")
 
 
 -- temlate default option

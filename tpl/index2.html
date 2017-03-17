@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= ctx.title %></title>
+</head>
+<body>
+	<% hello = "welcome to lua-resty-aries" %>
+	<h1><center><%= hello %></center></h1>
+    <% if (ctx.loop or 0) > 0 then %>
+        <% for i=1,ctx.loop,1 do %>
+            <% include inc/loop %>
+        <% end %>
+    <% else %>
+        <% include inc/noloop %>
+    <% end %>
+
+    <%= string.format("hello world %s %s %s %s", "<", ">", '"', "'") %>
+    <%- string.format("hello world %s %s %s %s", "<", ">", '"', "'") %>
+</body>
+</html>

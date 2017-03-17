@@ -1,0 +1,9 @@
+<h1>fibonacci</h1>
+<% ctx.fibonacci = function (n)
+        if n < 2 then
+            return 1
+        end
+        return ctx.fibonacci(n - 2) + ctx.fibonacci(n - 1)
+    end
+%>
+<%= ctx.fibonacci(ctx.num) %>

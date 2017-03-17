@@ -40,7 +40,7 @@ return {
     -- debug = true;
 
     pathcorrect = {
-      {"^.-/share/lua/5.%d/", "lib/", "aries.lua"};
+      {"lib/", "aries.lua"};
     },
 
   },

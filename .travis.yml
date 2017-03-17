@@ -18,17 +18,19 @@ before_install:
   - luarocks install Lua-cURL         --server=https://luarocks.org/dev
   - luarocks install luacov-coveralls --server=https://luarocks.org/dev
   - luarocks install lunitx
+  - luarocks install luacov-coveralls
 
 install:
   - luarocks make rockspecs/foo-scm-0.rockspec CFLAGS="-O2 -fPIC -ftest-coverage -fprofile-arcs" LIBFLAG="-shared --coverage"
 
 script:
   - lua -e "print(require'cURL'.version())"
-  - lunit.sh test.lua
+  - lua -lluacov test.lua
 
 after_success:
   - coveralls -b .. -r .. -i ./src --dump c.report.json
-  - luacov-coveralls -j c.report.json -v
+#  - luacov-coveralls -j c.report.json -v
+  - luacov-coveralls
 
 notifications:
   email:

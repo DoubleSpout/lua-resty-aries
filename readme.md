@@ -1,9 +1,9 @@
 
 # lua-resty-aries —— openresty and lua multi-function template. 
 [![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/DoubleSpout/lua-resty-aries.png?branch=master)](https://travis-ci.org/DoubleSpout/lua-resty-aries)
+[![Build Status](https://travis-ci.org/DoubleSpout/lua-resty-aries.svg?branch=master)](https://travis-ci.org/DoubleSpout/lua-resty-aries)
 
-You can use `lua-resty-aries` to render template and safety run lua code string.The template or code string can be from any kind of data source, such like: file, redis, mysql or mongodb, any you like. 
+You can use `lua-resty-aries` to render template and safety run lua code string.The template or code string can be from any kind of data source, such as: file, redis, mysql or mongodb, any you like. 
 
 **support openresty1.0.6+, lua5.1+**
 
@@ -11,11 +11,11 @@ lua-resty-aries support linux/ubantu, windows and mac.
 
 you need install lua/luajit first [http://www.lua.org/](http://www.lua.org/ "Lua")
 
-##Install
+## Install
 
 	
 
-##Get Started
+## Get Started
 
 	local Aries = require("aries")
     local aries1 = Aries:new()
@@ -27,7 +27,7 @@ you need install lua/luajit first [http://www.lua.org/](http://www.lua.org/ "Lua
 
     print(result)	-- <h1><center><%= hello %></center></h1>
 	   
-##Using file template
+## Using file template
 
 We create` index.html` file at `{workdir}/tpl/index.html`
 
@@ -53,7 +53,7 @@ We can render the template like this:
 
     print(result)
 
-##A littel complex example
+## A littel complex example
 
 We create tpl/index2.html like this
 
@@ -114,7 +114,7 @@ we can get error msg, correct to postion the error line, even it at include temp
 
 	index2.html: 14 >> inc/noloop.html: 2 have error  attempt to call field 'error' (a nil value)
 
-##Aries Constructor and Instance
+## Aries Constructor and Instance
    
 `Aries` Constructor method. Every time, you call `Aries:new(opt)` will return a new `Aries instance`.
 
@@ -184,7 +184,7 @@ we can get error msg, correct to postion the error line, even it at include temp
 
 
 	
-##Template API (using at template)
+## Template API (using at template)
 	
 We can use `include {templateName}` to include other template, `lua-resty-aries` will call `ariesInstance:getInclude({templateName})` everytime.(include first we call `ariesInstance:render({templateName})`). example:
 

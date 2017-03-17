@@ -32,6 +32,7 @@ return {
   -- (exclude overrules include, do not include
   -- the .lua extension)
   exclude = {
+	"test"
   },
 
   -- configuration for luacov-coveralls reporter

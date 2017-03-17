@@ -24,10 +24,8 @@ return {
   -- all will be included if nothing is listed
   -- (exclude overrules include, do not include
   -- the .lua extension)
-  include = {
-    "aries$",
-    "lib/.+$",
-  },
+	 include = {
+	 },
 
   -- Patterns for files to exclude when reporting
   -- all will be included if nothing is listed
@@ -42,7 +40,7 @@ return {
     -- debug = true;
 
     pathcorrect = {
-      {"^.-/share/lua/5.%d/", "aries.lua", "lib/"};
+      {"^.-/share/lua/5.%d/", "lib/", "aries.lua"};
     },
 
   },

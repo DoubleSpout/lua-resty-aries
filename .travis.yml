@@ -21,7 +21,7 @@ before_install:
   - luarocks install luacov-coveralls
 
 install:
-  - luarocks make rockspecs/foo-scm-0.rockspec CFLAGS="-O2 -fPIC -ftest-coverage -fprofile-arcs" LIBFLAG="-shared --coverage"
+#  - luarocks make rockspecs/foo-scm-0.rockspec CFLAGS="-O2 -fPIC -ftest-coverage -fprofile-arcs" LIBFLAG="-shared --coverage"
 
 script:
   - lua -e "print(require'cURL'.version())"

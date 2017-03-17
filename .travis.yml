@@ -7,7 +7,6 @@ env:
     - LUAROCKS=2.3.0
   matrix:
     - LUA=lua5.1
-    - LUA=luajit2.1  # current head of 2.1 branch
 
 branches:
   only:

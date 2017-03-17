@@ -25,8 +25,8 @@ return {
   -- (exclude overrules include, do not include
   -- the .lua extension)
   include = {
-    "/foo$",
-    "/foo/.+$",
+    "/aries$",
+    "/lib/.+$",
   },
 
   -- Patterns for files to exclude when reporting

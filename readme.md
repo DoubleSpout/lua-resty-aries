@@ -2,7 +2,7 @@
 # lua-resty-aries —— openresty and lua multi-function template. 
 [![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/DoubleSpout/lua-resty-aries.svg?branch=master)](https://travis-ci.org/DoubleSpout/lua-resty-aries)
-[![Coverage Status](https://coveralls.io/repos/github/DoubleSpout/lua-resty-aries/badge.svg?branch=master)](https://coveralls.io/github/DoubleSpout/lua-resty-aries?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/DoubleSpout/lua-resty-aries/badge.svg)](https://coveralls.io/github/DoubleSpout/lua-resty-aries)
 
 You can use `lua-resty-aries` to render template and safety run lua code string.The template or code string can be from any kind of data source, such as: file, redis, mysql or mongodb, any you like. 
 

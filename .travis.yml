@@ -24,6 +24,7 @@ install:
 #  - luarocks make rockspecs/foo-scm-0.rockspec CFLAGS="-O2 -fPIC -ftest-coverage -fprofile-arcs" LIBFLAG="-shared --coverage"
 
 script:
+  - cd lib/resty
   - lua -e "print(require'cURL'.version())"
   - lua -lluacov test.lua
 

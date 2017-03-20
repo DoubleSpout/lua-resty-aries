@@ -1,7 +1,7 @@
 package = "lua-resty-aries"
-version = "dev-1"
+version = "release-1.0"
 source = {
-    url = "git@github.com:DoubleSpout/lua-resty-aries.git"
+    url = "git://github.com/DoubleSpout/lua-resty-aries.git"
 }
 description = {
     summary = "Templating Engine (HTML) for Lua and OpenResty",

@@ -14,7 +14,9 @@ you need install lua/luajit first [http://www.lua.org/](http://www.lua.org/ "Lua
 
 ## Install
 
-	
+with luarocks
+
+	luarocks install lua-resty-aries
 
 ## Get Started
 

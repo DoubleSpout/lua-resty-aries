@@ -1,2 +1,3 @@
 /.vscode
 /debug.lua
+/benchmark.lua

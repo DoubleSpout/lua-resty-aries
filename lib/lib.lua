@@ -79,10 +79,10 @@ tplLib.splitTpl = function (self, template)
 	local startTag = tools.escapetag(ariesIns.startTag or "<%")
 	local endTag = tools.escapetag(ariesIns.endTag or "%>")
 
-	local luaCodeReg = string.format("%s(.-)%s", startTag, endTag)
-	local includeReg = string.format("^%s include (.-)%s", startTag, endTag)
-	local expressReg = string.format("^%s=(.-)%s", startTag, endTag)
-	local notEscapeReg = string.format("^%s%%-(.-)%s", startTag, endTag)
+	local luaCodeReg = startTag .. "(.-)" .. endTag -- string.format("%s(.-)%s", startTag, endTag)
+	local includeReg = "^".. startTag .. " include (.-)" .. endTag -- string.format("^%s include (.-)%s", startTag, endTag)
+	local expressReg = "^".. startTag .. "=(.-)" .. endTag -- string.format("^%s=(.-)%s", startTag, endTag)
+	local notEscapeReg = "^".. startTag .. "%-(.-)" .. endTag --string.format("^%s%%-(.-)%s", startTag, endTag)
 	local position = 1	-- postion表示匹配到的lua表达式位置
 
 	-- 返回迭代器,把模版切成不同类型的块
@@ -194,7 +194,7 @@ tplLib.parseInclude = function (self, template, includeTreeStr, includeTrackTree
 			-- 此处用于去重 ariesIns.includes 里面相同的模板名字
 			includes[chunk.text] = true
 			local str = ariesIns:getInclude(chunk.text)	-- 调用用户函数获取块内容
-			str = str:gsub("\n", "\n" .. chunk.space)	-- 塞入include之前的用户前面的空格或者换行，这样渲染出来就不会错位了
+			str = tools.gsub(str, "\n", "\n" .. chunk.space)	-- 塞入include之前的用户前面的空格或者换行，这样渲染出来就不会错位了
 			
 			-- 第一个参数include的模版字符串
 			-- 第二个参数 includeTreeStr 这个记录所有主模版一条include分支下面的include模版名称
@@ -330,11 +330,11 @@ tplLib.compile = function(self, code)
 
 	-- 不转义print
 	local rawPrint = function (text, escape)
-		local text = string.format("%s", text or "nil")
+		local text = text or "nil" --string.format("%s", )
 		if escape then
 			table.insert(result, string.format("%q", text))
 		else
-			table.insert(result, string.format("%s", text))
+			table.insert(result, text) --string.format("%s", text))
 			--table.insert(result, tools.trim(string.format("%s", text)))
 		end 
 	end
@@ -344,7 +344,7 @@ tplLib.compile = function(self, code)
 		local text = string.format("%s", text or "nil")
 		
 		for k, v in pairs(_M._ESCAPE_TABLE) do
-			text = text:gsub(k, v)
+			text = tools.gsub(text, k, v)
 		end
 		rawPrint(text, escape)
 	end

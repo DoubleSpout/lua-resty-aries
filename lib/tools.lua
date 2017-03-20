@@ -106,21 +106,21 @@ end
     result      @type string 	-- 转义后的字符串
 ]]
 _M.escapetag =  function(str)
-    if _M.isNgx then
-        local regx = [=[([^\w])]=]
-        local newStr = ngx.re.gsub(str, regx, "%$1", "i")
-        -- print("====================",str, newStr)
-        return newStr
-    end
+    -- if _M.isNgx then
+    --     local regx = [=[([^\w])]=]
+    --     local newStr = ngx.re.gsub(str, regx, "%$1", "i")
+    --     -- print("====================",str, newStr)
+    --     return newStr
+    -- end
     local newStr = str:gsub("([^%w])","%%%1")
     -- print("====================",str, newStr)
     return newStr
 end
 
 _M.gsub = function(str, regx, replace)
-    if _M.isNgx then
-        return ngx.re.gsub(str, regx, replace, "i")
-    end
+    -- if _M.isNgx then
+    --     return ngx.re.gsub(str, regx, replace, "i")
+    -- end
     return str:gsub(regx, replace)
 end
 

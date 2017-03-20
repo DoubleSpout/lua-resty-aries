@@ -1,5 +1,15 @@
-local tools = require("lib.tools")
-local lib = require("lib.lib")
+local tools, lib
+
+local ok = pcall(function() tools = require("resty.aries.tools") end)
+if not ok then
+	tools = require("aries.tools")
+end
+
+local ok = pcall(function() tools = require("resty.aries.lib") end)
+if not ok then
+	lib = require("aries.lib")
+end
+
 
 
 -- temlate default option

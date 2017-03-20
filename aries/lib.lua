@@ -1,4 +1,8 @@
-local tools = require("lib.tools")
+local tools
+local ok = pcall(function() tools = require("resty.aries.tools") end)
+if not ok then
+	tools = require("aries.tools")
+end
 
 local _M = {
 	_VERSION = "1.0",

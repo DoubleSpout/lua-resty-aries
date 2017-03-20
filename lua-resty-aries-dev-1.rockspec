@@ -16,5 +16,8 @@ dependencies = {
 build = {
     type = "builtin",
     modules = {
+        ["resty.aries"]                 = "aries.lua",
+        ["resty.aries.tools"]           = "aries/tools.lua",
+        ["resty.aries.lib"]             = "aries/lib.lua"
     }
 }

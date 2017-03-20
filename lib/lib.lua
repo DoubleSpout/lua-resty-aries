@@ -193,7 +193,7 @@ tplLib.parseInclude = function (self, template, includeTreeStr, includeTrackTree
 			end
 			-- 此处用于去重 ariesIns.includes 里面相同的模板名字
 			includes[chunk.text] = true
-			local str = ariesIns:getInclude(chunk.text)	-- 调用用户函数获取块内容
+			local str = ariesIns:getInclude(tools.trim(chunk.text))	-- 调用用户函数获取块内容
 			str = tools.gsub(str, "\n", "\n" .. chunk.space)	-- 塞入include之前的用户前面的空格或者换行，这样渲染出来就不会错位了
 			
 			-- 第一个参数include的模版字符串

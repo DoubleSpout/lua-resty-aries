@@ -103,7 +103,7 @@ function test_1()
 		local aries8 = Aries:new({
 			timeout=0.1,
 			ctx = {
-				num=34
+				num=36
 			}
 		})
 		local result, err = aries8:render("timeout")
@@ -211,11 +211,17 @@ function test_1()
 				x= 1
 		})
 		--print(json.encode(result))
+		local key1 = [[inc/inc_c]]
+		local key2 = [[inc/inc_a]]
+		local key3 = [[inc/inc_b]]
+		local key4 = [[inc/inc_err]]
+
 		assert(not err)
-		assert(result["inc\/inc_c"])
-		assert(result["inc\/inc_a"])
-		assert(result["inc\/inc_b"])
-		assert(result["inc\/inc_err"])
+		assert(result[key1])
+		assert(result[key2])
+		assert(result[key3])
+		assert(result[key4])
+
 		print("---------- include getIncludesByName test ok ----------")
 
 
@@ -245,10 +251,15 @@ function test_1()
 
 		-- print(json.encode(result))
 		assert(not err)
-		assert(result["inc\/inc_c"])
-		assert(result["inc\/inc_a"])
-		assert(result["inc\/inc_b"])
-		assert(result["inc\/inc_err"])
+		local key1 = [[inc/inc_c]]
+		local key2 = [[inc/inc_a]]
+		local key3 = [[inc/inc_b]]
+		local key4 = [[inc/inc_err]]
+
+		assert(result[key1])
+		assert(result[key2])
+		assert(result[key3])
+		assert(result[key4])
 		print("---------- include getIncludesByContent test ok ----------")
 
 

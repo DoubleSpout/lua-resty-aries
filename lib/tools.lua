@@ -14,17 +14,16 @@ local _M = {
 -- end)()
 
 _M.isNgx = not not ngx
-
+    
 _M.splitNgx = function(str, pat)
-    local splitDict = require("ngx_split")
-    local split = splitDict.split
-    return split(str, pat)
+    local ngx_re = require "ngx.re"
+    return ngx_re.split(str, pat)
 end
 
 _M.split = function(str, pat)
-    if _M.isNgx then    -- 如果有ngx
-        return _M.splitNgx(str, pat)
-    end
+    -- if _M.isNgx then    -- 如果有ngx
+    --     return _M.splitNgx(str, pat)
+    -- end
 
     local t = {}  -- NOTE: use {n = 0} in Lua-5.0
     local fpat = "(.-)" .. pat
@@ -48,10 +47,8 @@ end
 --     return str:gsub(str, "^[ \t\r]+", "")
 -- end
 
+
 _M.trim = function(s)
-    if _M.isNgx then
-        return ngx.re.gsub(s, "^[ \t\r]*(.-)[ \t\r]*$", "$0", "i")
-    end
     return (s:gsub("^[ \t\r]*(.-)[ \t\r]*$", "%1"))
 end
 
@@ -110,9 +107,14 @@ end
 ]]
 _M.escapetag =  function(str)
     if _M.isNgx then
-        return ngx.re.gsub(str, "([^\w])", "%%$0", "i")
+        local regx = [=[([^\w])]=]
+        local newStr = ngx.re.gsub(str, regx, "%$1", "i")
+        -- print("====================",str, newStr)
+        return newStr
     end
-    return str:gsub("([^%w])","%%%1")
+    local newStr = str:gsub("([^%w])","%%%1")
+    -- print("====================",str, newStr)
+    return newStr
 end
 
 _M.gsub = function(str, regx, replace)

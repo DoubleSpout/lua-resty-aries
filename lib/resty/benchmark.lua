@@ -1,4 +1,4 @@
-local Aries = require("aries")
+local Aries = require("resty.aries")
 local aries1 = Aries:new({
     isShowDetailError=false
 })

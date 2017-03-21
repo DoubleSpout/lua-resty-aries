@@ -5,7 +5,7 @@ if not ok then
 	tools = require("aries.tools")
 end
 
-local ok = pcall(function() tools = require("resty.aries.lib") end)
+local ok = pcall(function() lib = require("resty.aries.lib") end)
 if not ok then
 	lib = require("aries.lib")
 end

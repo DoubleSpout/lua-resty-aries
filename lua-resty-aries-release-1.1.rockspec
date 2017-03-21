@@ -1,5 +1,5 @@
 package = "lua-resty-aries"
-version = "release-1"
+version = "release-1.1"
 source = {
     url = "git://github.com/DoubleSpout/lua-resty-aries.git"
 }

@@ -1,5 +1,8 @@
 
-# lua-resty-aries —— openresty and lua multi-function template, it can correct show your error line. 
+# lua-resty-aries 
+
+**openresty and lua multi-function template, it can correct show your error line.**
+
 [![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/DoubleSpout/lua-resty-aries.svg?branch=master)](https://travis-ci.org/DoubleSpout/lua-resty-aries)
 [![Coverage Status](https://coveralls.io/repos/github/DoubleSpout/lua-resty-aries/badge.svg)](https://coveralls.io/github/DoubleSpout/lua-resty-aries)

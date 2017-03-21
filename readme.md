@@ -1,10 +1,10 @@
 
-# lua-resty-aries —— openresty and lua multi-function template. 
+# lua-resty-aries —— openresty and lua multi-function template, it can correct show your error line. 
 [![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/DoubleSpout/lua-resty-aries.svg?branch=master)](https://travis-ci.org/DoubleSpout/lua-resty-aries)
 [![Coverage Status](https://coveralls.io/repos/github/DoubleSpout/lua-resty-aries/badge.svg)](https://coveralls.io/github/DoubleSpout/lua-resty-aries)
 
-You can use `lua-resty-aries` to render template and safety run lua code string.The template or code string can be from any kind of data source, such as: file, redis, mysql or mongodb, any you like. 
+You can use `lua-resty-aries` to render template and safety run lua code string.The template or code string can be from any kind of data source, such as: file, redis, mysql or mongodb, any you like. And `lua-resty-aries` can correct postion your template's error line.
 
 **support openresty1.0.6+, lua5.1+**
 
@@ -20,7 +20,7 @@ with luarocks
 
 ## Get Started
 
-	local Aries = require("aries")
+	local Aries = require("resty.aries")
     local aries1 = Aries:new()
 
     local result, err = aries1:compile([=[ 
@@ -47,7 +47,7 @@ We create` index.html` file at `{workdir}/tpl/index.html`
 
 We can render the template like this:
 
-	local Aries = require("aries")
+	local Aries = require("resty.aries")
     local aries1 = Aries:new()
 
     local result, err = aries1:render("index", {
@@ -91,7 +91,7 @@ create inc/loop.html
 
 create render code:
 
-	local Aries = require("aries")
+	local Aries = require("resty.aries")
     local aries1 = Aries:new()
 
     local result, err = aries1:render("index2", {
@@ -103,7 +103,7 @@ create render code:
 
 if we change render code like this, this must be occur an error:
 
-	local Aries = require("aries")
+	local Aries = require("resty.aries")
     local aries1 = Aries:new()
 
     local result, err = aries1:render("index2", {
@@ -121,7 +121,7 @@ we can get error msg, correct to postion the error line, even it at include temp
    
 `Aries` Constructor method. Every time, you call `Aries:new(opt)` will return a new `Aries instance`.
 
-	local Aries = require("aries")
+	local Aries = require("resty.aries")
 	local ariesInstance = Aries:new(opt)
 
 `opt` all attribute, all of these attributes are `option`:

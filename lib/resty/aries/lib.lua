@@ -357,11 +357,11 @@ tplLib.compile = function(self, code)
 	-- 加锁ctx的属性
 	local function lock(field)
 		-- ctxSon[field] = nil
-		locks[field] = true
+		locks[tostring(field)] = true
 	end
 	-- 解锁ctx的属性
 	local function unlock(field)
-		locks[field] = false
+		locks[tostring(field)] = false
 		-- ctxSon[field] = nil
 	end
 
@@ -397,7 +397,7 @@ tplLib.compile = function(self, code)
 		__newindex = function (t,k,v)
 			if self.ctx[k] ~= nil  then
 				error("ctx.".. k .." is exists", 2)
-			elseif locks[k] == true then
+			elseif locks[k] == true or k == "print" then
 				error(k .. " is locked", 2)
 			else
 				ctxSon[k] = v

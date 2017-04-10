@@ -12,12 +12,19 @@ end
 
 
 
+
+
+
+
+
 -- temlate default option
 local Aries = {
     startTag = "<%",
     endTag = "%>",
     fileSuffix = "html",
     rootPath = "./tpl",
+    cache = true,
+    cacheTime = 1800,
     sep = "/",
     isShowDetailError = true,   -- must set off in production
     timeout = -1,       --sec
@@ -135,6 +142,8 @@ local _M = {
 }
 _M.new = function(self, opt)
     local aries = opt or {}
+    aries.cacheData = {}
+    aries.cacheLastScanTs = 0
      return setmetatable(aries,{__index=Aries}) 
 end
 

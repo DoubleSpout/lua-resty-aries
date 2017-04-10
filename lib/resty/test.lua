@@ -42,6 +42,9 @@ function test_1()
 			endTag = "}}",
 		})
 		local result, err = aries2:render("tagRender")
+		if err then
+			print("**************", err, "*************")
+		end
 		assert(not err)
 		local q = result:find("x=1;")
 		assert(q>0)
@@ -158,6 +161,7 @@ function test_1()
 		local aries11 = Aries:new({
 			startTag = "{{",
 			endTag = "}}",
+			cacheTime = 3, -- cahce 3 second
 		})
 
 		local result, err = aries11:render("includeRender", {
@@ -166,7 +170,45 @@ function test_1()
 		assert(not err)
 		local q = result:find("inc_c")
 		assert(q>0)
-		print("---------- inlcued file test ok ----------")
+		assert(aries11.lastIsCache == false)
+		print("---------- inlcued file test ok 1 ----------")
+		
+
+		local result, err = aries11:render("includeRender", {
+				x= 1
+		})
+		-- print("********",err,"***********")
+		assert(not err)
+		local q = result:find("inc_c")
+		assert(q>0)
+		assert(aries11.lastIsCache == true)
+		print("---------- inlcued file test ok 2 ----------")
+
+		-- sleep 5 second
+		-- render again no cache
+		local ts = os.time()
+		print("=========  sleep 5 second  =============")
+		while(1) do
+			if os.time() - ts >= 5 then
+				break
+			end
+		end
+		print("=========  wake up 5 second  =============")
+
+		local result, err = aries11:render("includeRender", {
+				x= 1
+		})
+		assert(not err)
+		local q = result:find("inc_c")
+		assert(q>0)
+		assert(aries11.lastIsCache == false)
+		for k, v in pairs(aries11.cacheData) do
+			print(k, "::::", v)
+			assert(os.time() - v.ts < 3)
+		end
+		print("---------- inlcued file test ok 3 ----------")
+
+
 
 
 		-- inlcued error
@@ -180,9 +222,24 @@ function test_1()
 		})
 		--print(err)
 		local q = err:find("includeRender.html: 4 >> inc/inc_err.html: 9 have error")
+		print("********",err,"***********")
 		assert(q>0)
-		print("---------- inlcued error test ok ----------")
+		assert(aries12.lastIsCache == false)
+		print("---------- inlcued error test ok 1 ----------")
+		
 
+
+		-- use cache
+		local result, err = aries12:render("includeRender", {
+				x= -1
+		})
+		--print(err)
+		local q = err:find("includeRender.html: 4 >> inc/inc_err.html: 9 have error")
+		print("********",err,"***********")
+		assert(q>0)
+		assert(aries12.lastIsCache == false)
+		print("---------- inlcued error test ok 2 ----------")
+		
 
 
 

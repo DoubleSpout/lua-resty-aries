@@ -1,11 +1,11 @@
 
 	local Aries = require("aries")
     local aries1 = Aries:new({
-                -- startTag = "{{",
-			    -- endTag = "}}",
+                startTag = "{{",
+			    endTag = "}}",
     })
 
-    local result, err = aries1:render("error", {
+    local result, err = aries1:render("tagRender", {
             x= -1
 	})
 

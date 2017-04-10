@@ -149,7 +149,13 @@ we can get error msg, correct to postion the error line, even it at include temp
 		-- if occur error, show the error line and msg, this must set off in production to increase performance
 		isShowDetailError = true,  
 
-		-- template render timeout, unit seconde
+		-- tpl parse cache,default is true, 
+		cache = true,
+
+		-- tpl parse cache time, default expire 30min, unit second
+		cacheTime = 1800,
+
+		-- template render timeout, unit second
 		-- default not timeout
 		timeout = -1,
 

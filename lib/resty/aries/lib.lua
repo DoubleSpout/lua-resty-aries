@@ -1,7 +1,38 @@
-local tools
+local tools, core, md5
 local ok = pcall(function() tools = require("resty.aries.tools") end)
 if not ok then
 	tools = require("aries.tools")
+end
+
+local ok = pcall(function() _ = require "bit" end)
+
+if not ok then
+
+	-- 加载c版本的md5
+	local ok = pcall(function() core = require("resty.aries.core") end)
+	if not ok then
+		core = require("aries.core")
+	end
+	function md5Func (k)
+		local k = core.sum(k)
+		return (string.gsub(k, ".", function (c)
+				return string.format("%02x", string.byte(c))
+				end))
+	end
+
+else
+
+	-- 加载lua版本的md5
+	local ok = pcall(function() md5 = require("resty.aries.md5") end)
+	if not ok then
+		md5 = require("aries.md5")
+	end
+	function md5Func (message)
+		local m = md5.new()
+		m:update(message)
+		return md5.tohex(m:finish())
+	end
+
 end
 
 local _M = {
@@ -153,6 +184,77 @@ end
 
 
 --[[
+@desc
+	缓存解析之后的模版结构
+@params
+	self			@type table
+	template    	@type string 	-- 模板字符串
+@return
+	ok, function() end
+]]
+tplLib.getCachePaseTpl = function(self, template)
+	local ariesIns = self.ariesIns
+	if not ariesIns.cache then	-- 未开缓存
+		return nil, function() end
+	end
+
+	-- 当超过设定时间则进行扫描
+	local nowTs = os.time()
+	if nowTs - ariesIns.cacheLastScanTs >= ariesIns.cacheTime then
+		self:scanAndClearCache()
+	end
+
+	-- or里使用ngx的md5
+	local md5Key = ""
+	if ngx and ngx.md5 then
+		md5Key = ngx.md5(template)
+	else
+		md5Key = md5Func(template)
+	end
+
+	-- print(md5Key)
+	
+	-- 如果存在md5key
+	if ariesIns.cacheData[md5Key] and ariesIns.cacheData[md5Key].data then
+		return ariesIns.cacheData[md5Key].data, function() end
+	else
+		ariesIns.cacheData[md5Key] = nil
+	end
+
+	return nil, function(newData) 
+			ariesIns.cacheData[md5Key] = {
+				data = newData,
+				ts = nowTs,
+			}
+	end
+
+end
+
+--[[
+@desc
+	扫描并删除过期的缓存
+@params
+	self			@type table
+@return
+]]
+tplLib.scanAndClearCache = function(self)
+	local ariesIns = self.ariesIns
+	local rmKeys = {}
+	local nowTs = os.time()
+	for k, v in pairs(ariesIns.cacheData) do
+		if not v.ts or (nowTs - v.ts >= ariesIns.cacheTime) then
+			table.insert(rmKeys, k)
+		end
+	end
+
+	for _, key in ipairs(rmKeys) do 
+		ariesIns.cacheData[key] = nil
+	end
+
+	ariesIns.cacheLastScanTs = nowTs
+end
+
+--[[
 	@desc
 		将拆分的对应的语法块中include的内容解析出来
 	@params
@@ -285,6 +387,18 @@ end
 ]]
 tplLib.packTpl = function (self, template, mainTplName)
 	local ariesIns = self.ariesIns
+	-- 先获取一把缓存
+	local cacheCode, callbackSave = self:getCachePaseTpl(template)
+	self.callbackSave = callbackSave
+	if cacheCode then
+		ariesIns.lastIsCache = true
+		return cacheCode
+	else	
+		ariesIns.lastIsCache = false
+	end
+
+
+	
 	local ctxPrint = "ctx.print"
 	local ctxRawPrint = "ctx.rawPrint" --原生的print
 	local output, includes = self:parseInclude(template)	-- 把所有include放进来
@@ -442,6 +556,8 @@ tplLib.compile = function(self, code)
 			error(string.format("%s have error %s", self.mainTplName, err), 2)
 		end
 	end
+
+	self.callbackSave(code)
 
 	return table.concat(result, "")
 end

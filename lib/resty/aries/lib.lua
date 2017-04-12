@@ -193,13 +193,13 @@ end
 	ok, function() end
 ]]
 tplLib.getCachePaseTpl = function(self, template)
-	local ariesIns = self.ariesIns
-	if not ariesIns.cache then	-- 未开缓存
-		return nil, function() end
-	end
-
 	-- 当超过设定时间则进行扫描
 	local nowTs = os.time()
+	local ariesIns = self.ariesIns
+
+	if not ariesIns.cache then	-- 未开缓存
+		return nil, nil
+	end
 	if nowTs - ariesIns.cacheLastScanTs >= ariesIns.cacheTime then
 		self:scanAndClearCache()
 	end
@@ -216,20 +216,14 @@ tplLib.getCachePaseTpl = function(self, template)
 	
 	-- 如果存在md5key
 	if ariesIns.cacheData[md5Key] and ariesIns.cacheData[md5Key].data then
-		return ariesIns.cacheData[md5Key].data, function() end
+		return ariesIns.cacheData[md5Key].data, nil
 	else
 		ariesIns.cacheData[md5Key] = nil
 	end
 
-	return nil, function(newData) 
-			ariesIns.cacheData[md5Key] = {
-				data = newData,
-				ts = nowTs,
-			}
-	end
+	return nil, md5Key
 
 end
-
 --[[
 @desc
 	扫描并删除过期的缓存
@@ -388,8 +382,11 @@ end
 tplLib.packTpl = function (self, template, mainTplName)
 	local ariesIns = self.ariesIns
 	-- 先获取一把缓存
-	local cacheCode, callbackSave = self:getCachePaseTpl(template)
-	self.callbackSave = callbackSave
+	-- local cacheCode, callbackSave = self:getCachePaseTpl(template)
+	-- self.callbackSave = callbackSave
+
+	local cacheCode, md5Key = self:getCachePaseTpl(template)
+	self.md5Key = md5Key
 	if cacheCode then
 		ariesIns.lastIsCache = true
 		return cacheCode
@@ -557,8 +554,17 @@ tplLib.compile = function(self, code)
 		end
 	end
 
-	self.callbackSave(code)
-
+	-- self.callbackSave(code)
+	if type(ariesIns.cacheData) ~= "table" then
+		ariesIns.cacheData = {}
+	end
+	
+	if self.md5Key then
+		ariesIns.cacheData[self.md5Key] = {
+			data = code,
+			ts = os.time(),
+		}
+	end
 	return table.concat(result, "")
 end
 
